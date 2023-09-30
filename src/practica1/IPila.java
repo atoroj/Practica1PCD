@@ -10,7 +10,7 @@ package practica1;
  */
 public interface IPila {
     int GetNum();
-    void Apila(Object elemento);
-    Object Desapila();
-    Object Primero();
+    void Apila(Object elemento) throws Exception;
+    Object Desapila() throws Exception;
+    Object Primero() throws Exception;
 }

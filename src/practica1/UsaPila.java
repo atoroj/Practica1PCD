@@ -11,16 +11,24 @@ import java.util.Random;
  * @author usuario
  */
 public class UsaPila {
+
     public static void main(String[] args) {
         Pila p = new Pila(10);
         Random r = new Random(System.currentTimeMillis());
-        System.out.println(r.nextInt(100));
-        if (r.nextInt(100) % 2 == 0) {
-            //p.Apila(null);
-            System.out.println("Es par");
-        }else{
-            System.out.println("Es impar");
-            //p.Desapila();
+        int num;
+        for (int i = 0; i < 10; i++) {
+            num = r.nextInt(100);
+            System.out.println("---------------------------------------");
+            System.out.println("Se ha GENERADO el numero: " + num);
+            try {
+                if ((num % 2) == 0) {
+                    p.Apila(num);
+                } else {
+                    p.Desapila();
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
         }
     }
 }
