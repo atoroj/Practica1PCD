@@ -30,5 +30,7 @@ public class UsaPila {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+        System.out.println("---------------------------------------");
+        System.out.println("HAY APILADOS UN TOTAL DE: "+ p.GetNum());
     }
 }
