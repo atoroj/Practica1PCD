@@ -8,14 +8,14 @@ package practica1;
  *
  * @author usuario
  */
-public class Pila implements IPila {
+public class PilaLenta implements IPila {
 
     private int cima;
     private final int capacidad;
     private int numelementos;
     private Object datos[];
 
-    public Pila(int capacidad) {
+    public PilaLenta(int capacidad) {
         this.capacidad = capacidad;
         this.datos = new Object[capacidad];
         this.numelementos = 0;
@@ -28,12 +28,14 @@ public class Pila implements IPila {
     }
 
     @Override
-    public void Apila(Object elemento) throws Exception {
+    public synchronized void Apila(Object elemento) throws Exception {
         if (!pilaLlena()) {
             this.datos[cima] = elemento;
-            System.out.println("Se ha APILADO el dato "+ elemento);
-            this.numelementos++;
+            Thread.sleep(100);
             this.cima++;
+            Thread.sleep(100);
+            this.numelementos++;
+            System.out.println("Se ha APILADO el dato " + elemento);
         } else {
             throw new Exception("Error: La pila esta llena");
         }
@@ -41,16 +43,18 @@ public class Pila implements IPila {
     }
 
     @Override
-    public Object Desapila() throws Exception {
+    public synchronized Object Desapila() throws Exception {
 
         if (pilaVacia()) {
             throw new Exception("Error: La pila esta vacia");
         } else {
             Object elemento = null;
             elemento = this.datos[cima - 1];
-            System.out.println("Se ha DESAPILADO el dato "+ elemento);
-            this.numelementos--;
+            Thread.sleep(100);
             this.cima--;
+            Thread.sleep(100);
+            this.numelementos--;
+            System.out.println("Se ha DESAPILADO el dato " + elemento);
             return elemento;
         }
     }
