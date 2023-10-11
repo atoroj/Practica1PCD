@@ -14,12 +14,14 @@ public class PilaLenta implements IPila {
     private final int capacidad;
     private int numelementos;
     private Object datos[];
-
-    public PilaLenta(int capacidad) {
+    private CanvasPila cp;
+    
+    public PilaLenta(int capacidad, CanvasPila cp) {
         this.capacidad = capacidad;
         this.datos = new Object[capacidad];
         this.numelementos = 0;
         this.cima = 0;
+        this.cp = cp;
     }
 
     @Override
@@ -35,8 +37,10 @@ public class PilaLenta implements IPila {
             this.cima++;
             Thread.sleep(100);
             this.numelementos++;
+            this.cp.representa(this.datos, this.cima, this.numelementos);
             System.out.println("Se ha APILADO el dato " + elemento);
         } else {
+            this.cp.avisa("Pila llena");
             throw new Exception("Error: La pila esta llena");
         }
 
@@ -46,6 +50,7 @@ public class PilaLenta implements IPila {
     public synchronized Object Desapila() throws Exception {
 
         if (pilaVacia()) {
+            this.cp.avisa("Pila vacia");
             throw new Exception("Error: La pila esta vacia");
         } else {
             Object elemento = null;
@@ -54,6 +59,7 @@ public class PilaLenta implements IPila {
             this.cima--;
             Thread.sleep(100);
             this.numelementos--;
+            this.cp.representa(this.datos, this.cima, this.numelementos);
             System.out.println("Se ha DESAPILADO el dato " + elemento);
             return elemento;
         }
