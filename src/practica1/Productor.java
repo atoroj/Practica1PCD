@@ -24,16 +24,19 @@ public class Productor extends Thread {
     public void producir() {
         r.setSeed(System.nanoTime());
         int num;
-        for (int i = 0; i < 10; i++) {
-            try {
+        try {
+            for (int i = 0; i < 15; i++) {
                 num = r.nextInt(100);
+                sleep(r.nextInt(3) * 1000);
                 pila.Apila(num);
-                System.out.println("El hilo: "+ getId()+ " Apila: "+ num);
-            } catch (Exception e) {
-                System.out.println("El hilo: "+ getId()+ " Error: " + e.getMessage());
+                System.out.println("El hilo: " + getId() + " Apila: " + num);
             }
-
+        } catch (InterruptedException e) {
+            System.out.println("El hilo: " + getId() + " Error: " + e.getMessage());
+        } catch (Exception ex) {
+            System.out.println("Hilo " + getId() + " productor termina por no poder insertar");
         }
+
     }
 
     @Override

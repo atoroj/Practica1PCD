@@ -29,16 +29,18 @@ public class PilaFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(300, 500));
+        setResizable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 392, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 351, Short.MAX_VALUE)
         );
 
         pack();
@@ -50,27 +52,41 @@ public class PilaFrame extends javax.swing.JFrame {
     public static void main(String args[]) throws InterruptedException {
         int capacidad = 10;
         PilaFrame f = new PilaFrame();
-        f.setSize(1280,720);
+        f.setSize(1280, 720);
         f.setTitle("Practica 3");
         f.setLocation(100, 50);
-        
+
         f.cp = new CanvasPila(1280, 720, capacidad);
         f.add(f.cp);
-        f.cp.setLocation(50,50);
+        f.cp.setLocation(50, 50);
         f.setVisible(true);
-        
+
         PilaLenta pila = new PilaLenta(capacidad, f.cp);
         Productor p1 = new Productor(pila, 0);
-
+        Productor p2 = new Productor(pila, 0);
+        Productor p3 = new Productor(pila, 0);
+        Productor p4 = new Productor(pila, 0);
         Consumidor c = new Consumidor(pila);
         Thread c1 = new Thread(c);
 
         p1.start();
-        p1.join();
+        p2.start();
+        p3.start();
+        p4.start();
 
         c1.start();
         c1.join();
-        Thread.sleep(3000);
+        Thread.sleep(3500);
+        for (int i = 0; i < 3; i++) {
+            synchronized (pila) {
+                pila.notifyAll();
+            }
+            Thread.sleep(100);
+        }
+        p1.join();
+        p2.join();
+        p3.join();
+        p4.join();
         System.exit(0);
     }
 

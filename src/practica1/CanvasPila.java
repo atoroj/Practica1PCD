@@ -49,13 +49,13 @@ public class CanvasPila extends Canvas {
                 og.drawString(""+datos[i]+"", 240, (15+50*this.capacidad)-50*i);
             }
         }
-//        og.setFont(f2);
-//        og.setColor(Color.red);
-//        if(this.numelementos == this.capacidad){
-//            og.drawString("Pila llena", 100, 60*this.capacidad);
-//        }else if (this.numelementos == 0) {
-//            og.drawString("Pila vacia", 300, 60*this.capacidad);
-//        }        
+        og.setFont(f2);
+        og.setColor(Color.red);
+        if(this.numelementos == this.capacidad){
+            og.drawString("Pila llena", 100, 60*this.capacidad);
+        }else if (this.numelementos == 0) {
+            og.drawString("Pila vacia", 300, 60*this.capacidad);
+        }        
         g.drawImage(img, 0, 0, null);
     }
 

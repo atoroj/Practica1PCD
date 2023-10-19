@@ -15,7 +15,7 @@ public class PilaLenta implements IPila {
     private int numelementos;
     private Object datos[];
     private CanvasPila cp;
-    
+
     public PilaLenta(int capacidad, CanvasPila cp) {
         this.capacidad = capacidad;
         this.datos = new Object[capacidad];
@@ -30,39 +30,48 @@ public class PilaLenta implements IPila {
     }
 
     @Override
-    public synchronized void Apila(Object elemento) throws Exception {
-        if (!pilaLlena()) {
-            this.datos[cima] = elemento;
-            Thread.sleep(100);
-            this.cima++;
-            Thread.sleep(100);
-            this.numelementos++;
-            this.cp.representa(this.datos, this.cima, this.numelementos);
-            System.out.println("Se ha APILADO el dato " + elemento);
-        } else {
-            this.cp.avisa("Pila llena");
-            throw new Exception("Error: La pila esta llena");
+    public synchronized void Apila(Object elemento) throws InterruptedException, Exception {
+        int numIntentos = 0;
+        while (pilaLlena() && numIntentos < 3) {
+            this.wait();
+            numIntentos++;
+            System.out.println("Numero de intentos parar apilar: "+numIntentos+ " del hilo "+Thread.currentThread().getId());
         }
-
+            if (!pilaLlena()) {
+                this.datos[cima] = elemento;
+                this.cima++;
+                this.numelementos++;
+                this.cp.representa(this.datos, this.cima, this.numelementos);
+                notifyAll();
+                System.out.println("Se ha APILADO el dato " + elemento);
+            } else {
+                this.cp.avisa("Pila llena");
+                throw new java.lang.Exception("Error: La pila esta llena");
+            }
     }
 
     @Override
-    public synchronized Object Desapila() throws Exception {
-
-        if (pilaVacia()) {
-            this.cp.avisa("Pila vacia");
-            throw new Exception("Error: La pila esta vacia");
-        } else {
-            Object elemento = null;
+    public synchronized Object Desapila() throws InterruptedException, Exception {
+        Object elemento = null;
+        int numIntentos = 0;
+        while (pilaVacia() && numIntentos < 3) {
+            wait();
+            numIntentos++;
+            System.out.println("Numero de intentos parar desapilar: "+numIntentos+ " del hilo "+Thread.currentThread().getId());
+        }
+        if (!pilaVacia()) {
             elemento = this.datos[cima - 1];
-            Thread.sleep(100);
             this.cima--;
-            Thread.sleep(100);
             this.numelementos--;
             this.cp.representa(this.datos, this.cima, this.numelementos);
+            notifyAll();
             System.out.println("Se ha DESAPILADO el dato " + elemento);
-            return elemento;
+
+        } else {
+            this.cp.avisa("Pila vacia");
+            throw new java.lang.Exception("Error: La pila esta vacia");
         }
+        return elemento;
     }
 
     @Override
