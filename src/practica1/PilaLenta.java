@@ -33,9 +33,9 @@ public class PilaLenta implements IPila {
     public synchronized void Apila(Object elemento) throws InterruptedException, Exception {
         int numIntentos = 0;
         while (pilaLlena() && numIntentos < 3) {
-            this.wait();
             numIntentos++;
-            System.out.println("Numero de intentos parar apilar: "+numIntentos+ " del hilo "+Thread.currentThread().getId());
+            System.out.println("Numero de intentos parar apilar: "+numIntentos+ " del hilo// "+Thread.currentThread().getId());
+            this.wait();
         }
             if (!pilaLlena()) {
                 this.datos[cima] = elemento;
@@ -57,7 +57,7 @@ public class PilaLenta implements IPila {
         while (pilaVacia() && numIntentos < 3) {
             wait();
             numIntentos++;
-            System.out.println("Numero de intentos parar desapilar: "+numIntentos+ " del hilo "+Thread.currentThread().getId());
+            System.out.println("Numero de intentos parar desapilar: "+numIntentos+ "// del hilo "+Thread.currentThread().getId());
         }
         if (!pilaVacia()) {
             elemento = this.datos[cima - 1];
